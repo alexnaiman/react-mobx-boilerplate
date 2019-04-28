@@ -1,24 +1,26 @@
-
-import React, { Component } from 'react';
-import { inject, observer } from 'mobx-react';
-import styled, { ThemeProvider } from 'styled-components';
-import { Router, Switch, Route } from 'react-router-dom';
-import Login from './Login/Login';
-
-import theme from '../constans/theme/theme';
-
-import { RoutePrivate, RoutePublic } from '../components'
-import Dashboard from './Dashboard/Dashboard';
-import NotFound from './NotFound/NotFound';
+import React, { Component } from "react";
+import { inject, observer } from "mobx-react";
+import { ThemeProvider } from "styled-components";
+import { Switch, Route } from "react-router-dom";
 import { withRouter } from "react-router-dom";
-import { AppWrapper } from '../components'
 
-@inject('routing', 'store')
+import Login from "./Login/Login";
+
+import theme from "../constans/theme/theme";
+
+import { RoutePrivate, RoutePublic } from "../components";
+import Dashboard from "./Dashboard/Dashboard";
+import NotFound from "./NotFound/NotFound";
+import { AppWrapper } from "../components";
+
+@inject("routing", "store")
 @withRouter
 @observer
 export default class App extends Component {
   render() {
-    const { store: { auth } } = this.props
+    const {
+      store: { auth }
+    } = this.props;
 
     return (
       <ThemeProvider theme={theme}>
@@ -63,4 +65,3 @@ export default class App extends Component {
     );
   }
 }
-

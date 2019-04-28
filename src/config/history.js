@@ -1,21 +1,21 @@
-import { createBrowserHistory } from 'history'
-import qs from 'qs';
+import { createBrowserHistory } from "history";
+import qs from "qs";
 
 const history = createBrowserHistory();
 
 history.location = {
-    ...history.location,
-    query: qs.parse(history.location.search.substr(1)),
-    state: {},
+  ...history.location,
+  query: qs.parse(history.location.search.substr(1)),
+  state: {}
 };
 
 /* istanbul ignore next */
 history.listen(() => {
-    history.location = {
-        ...history.location,
-        query: qs.parse(history.location.search.substr(1)),
-        state: history.location.state || {},
-    };
+  history.location = {
+    ...history.location,
+    query: qs.parse(history.location.search.substr(1)),
+    state: history.location.state || {}
+  };
 });
 
 const { go, goBack, push, replace } = history;
