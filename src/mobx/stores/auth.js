@@ -31,22 +31,23 @@ const authStore = types
       });
       self.setLoading(false);
     },
-    login: () => {
-      // simulate login
+    // helper function used to simulate login delay
+    setToken: token => (self.token = token),
+    // function that simulates a backend request with delay
+    login: flow(function* login() {
       self.setLoading(true);
-      self.token = "LOGGED_IN";
+      yield new Promise(resolve => setTimeout(resolve, 1000)).then(() =>
+        self.setToken("LOGGED_IN")
+      );
       self.setLoading(false);
-    }
-    // login: flow(function* login(email, password) {
-    //     self.setLoading(true)
-    //     authService.loginUser(email, password, self.setUser, self.setError)
-    // }),
-    // refresh: flow(function* refresh() {
-    //     authService.refreshToken(self.setUser)
-    // }),
-    // logOut: flow(function* logOut() {
-    //     authService.logOutUser(() => self.setUser({}), self.setError)
-    // })
+    }),
+    logout: flow(function* logout() {
+      self.setLoading(true);
+      yield new Promise(resolve => setTimeout(resolve, 1000)).then(() =>
+        self.setToken("")
+      );
+      self.setLoading(false);
+    })
   }));
 
 export default authStore;

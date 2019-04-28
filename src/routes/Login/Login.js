@@ -5,11 +5,17 @@ import { observer, inject } from "mobx-react";
 @observer
 export default class Login extends Component {
   state = {};
-  componentDidMount() {
-    this.props.store.auth.login();
-  }
-
   render() {
-    return <div>Login</div>;
+    const {
+      store: {
+        auth: { isLoading, login }
+      }
+    } = this.props;
+    return (
+      <div onClick={() => login()}>
+        Login
+        {isLoading && "...Loading"}
+      </div>
+    );
   }
 }
