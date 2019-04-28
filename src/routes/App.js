@@ -29,8 +29,8 @@ export default class App extends Component {
           <Switch>
             <RoutePublic
               isAuthenticated={auth.isLoggedIn}
-              path="/"
-              to="dashboard"
+              path="/login"
+              to="/"
               exact
               component={Login}
             />
@@ -43,8 +43,9 @@ export default class App extends Component {
               /> */}
             <RoutePrivate
               isAuthenticated={auth.isLoggedIn}
-              path="/dashboard"
+              path="/"
               exact
+              to="/login"
               component={Dashboard}
             />
             {/*<RoutePrivate

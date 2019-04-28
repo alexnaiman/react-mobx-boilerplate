@@ -3,7 +3,9 @@ const {
   disableEsLint,
   addDecoratorsLegacy,
   addBabelPlugins,
-  fixBabelImports
+  addBabelPresets,
+  fixBabelImports,
+  addLessLoader
 } = require("customize-cra");
 
 module.exports = override(

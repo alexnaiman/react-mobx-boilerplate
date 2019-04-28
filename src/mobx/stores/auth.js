@@ -30,6 +30,12 @@ const authStore = types
         image: user.photoURL
       });
       self.setLoading(false);
+    },
+    login: () => {
+      // simulate login
+      self.setLoading(true);
+      self.token = "LOGGED_IN";
+      self.setLoading(false);
     }
     // login: flow(function* login(email, password) {
     //     self.setLoading(true)
