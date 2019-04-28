@@ -1,9 +1,6 @@
 {
-    "presets": [
-        "es2015",
-        "stage-1"
-    ],
-    "plugins": [
-        "@babel/plugin-proposal-decorators"
-    ]
+  "presets": ["es2015", "stage-1"],
+  "plugins": [
+    ["@babel/plugin-proposal-decorators", { "decoratorsBeforeExport": true }]
+  ]
 }
