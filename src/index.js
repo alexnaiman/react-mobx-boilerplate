@@ -1,28 +1,38 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
-import createBrowserHistory from 'history/createBrowserHistory';
 import { Provider } from 'mobx-react';
 import { RouterStore, syncHistoryWithStore } from 'mobx-react-router';
-import { Router } from 'react-router';
+import { createGlobalStyle } from 'styled-components'
+import { Router } from 'react-router-dom';
 
-const browserHistory = createBrowserHistory();
+
+import App from './routes/App';
+import * as serviceWorker from './serviceWorker';
+import reset from './css/reset';
+import browserHistory from './config/history'
+import store from './mobx'
+
+const GlobalStyle = createGlobalStyle`${reset}`;
+
 const routingStore = new RouterStore();
 
 const stores = {
-    // Key can be whatever you want
+    store: store.create(),
     routing: routingStore,
-    // ...other stores
 };
 
+
+
 const history = syncHistoryWithStore(browserHistory, routingStore);
+
 ReactDOM.render(
     <Provider {...stores}>
-        <Router history={history}>
-            <App />
-        </Router>
+        <Fragment>
+            <Router history={history}>
+                <App />
+            </Router>
+            <GlobalStyle />
+        </Fragment>
     </Provider>,
     document.getElementById('root')
 );
