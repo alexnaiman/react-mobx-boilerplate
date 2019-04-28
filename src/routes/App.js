@@ -25,7 +25,7 @@ export default class App extends Component {
     return (
       <ThemeProvider theme={theme}>
         <AppWrapper>
-          {/* {auth.isLoggedIn && <Header user={user} logout={logout} />} */}
+          {/* {auth.isLoggedIn && <Header user={auth.userData} logout={auth.logout} />} */}
           <Switch>
             <RoutePublic
               isAuthenticated={auth.isLoggedIn}

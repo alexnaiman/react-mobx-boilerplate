@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { observer, inject } from "mobx-react";
+import Login from "../../module/Login/Login";
 
+// the smart component that is linked to the store
 @inject("store")
 @observer
-export default class Login extends Component {
+export default class LoginRoute extends Component {
   state = {};
   render() {
     const {
@@ -13,7 +15,7 @@ export default class Login extends Component {
     } = this.props;
     return (
       <div onClick={() => login()}>
-        Login
+        <Login />
         {isLoading && "...Loading"}
       </div>
     );
