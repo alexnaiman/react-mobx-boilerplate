@@ -32,7 +32,6 @@
     "styled-components": "^4.0.0"
   },
   "devDependencies": {
-    "babel-eslint": "9.x",
     "babel-plugin-import": "^1.11.0",
     "customize-cra": "^0.2.9",
     "eslint-config-prettier": "^4.2.0",
@@ -46,7 +45,7 @@
     "husky": ">=1",
     "lint-staged": ">=8",
     "prettier": "1.17.0",
-    "react-scripts": "^2.1.1"
+    "react-scripts": "^3.2.0"
   },
   "scripts": {
     "start": "react-app-rewired start",
