@@ -1,18 +1,20 @@
-// a library to wrap and simplify api calls
 import apisauce from "apisauce";
-import { browserHistory } from "react-router";
+import getCookie from "../cookieProvider";
+import apiCalls, { apiCallNames } from "./apiCalls";
+import browserHistory from "../history";
+
+const cookies = getCookie();
 
 // our "constructor"
 // http://localhost:8080/ is the address of the spring server
-const create = (baseURL = "https://api.github.com/") => {
+const create = (baseURL = "http://localhost:8000/") => {
   const api = apisauce.create({
     // base URL is read from the "constructor"
     baseURL,
     // here are some default headers
     headers: {},
     // 10 second timeout...
-    timeout: 10240,
-    withCredentials: true
+    timeout: 10240
   });
 
   api.addResponseTransform(response => {
@@ -21,28 +23,22 @@ const create = (baseURL = "https://api.github.com/") => {
     }
   });
 
+  api.addRequestTransform(request => {
+    const token = cookies.get("access_token");
+    if (cookies.get("access_token")) {
+      request.headers.Authentication = `Bearer ${token}`;
+    }
+  });
+
+  const calls = Object.keys(apiCalls).map(getApiCalls =>
+    apiCalls[getApiCalls](api)
+  );
   return {
-    // a list of the API functions
-    // login: (username, password) =>
-    //   api.post(`/api_login?username=${username}&password=${password}`),
-    // logout: () => api.get("/logout"),
-    // register: data => api.post("/register", data),
-    // getOffers: () => api.get("/offer"),
-    // getCauses: () => api.get("/cause"),
-    // getOwnOffers: () => api.get("/offer/getOwn"),
-    // saveOffer: data => api.post("/offer", data),
-    // getProposalsDonor: () => api.get("/proposal/getOwn"),
-    // saveProposal: data => api.post("/proposal/create", data),
-    // getCurrentUser: () => api.get("/user"),
-    // declineProposal: proposalId => api.post(`/proposal/${proposalId}/deny`),
-    // acceptProposal: (proposalId, payload) =>
-    //   api.post(`/proposal/${proposalId}/accept`, payload),
-    // getAcceptedProposals: () => api.get("/proposal/getAccepted")
-    getRepositoriesByName: query =>
-      api.get(`/search/repositories?q=${query}&sort=stars`)
+    ...calls.reduce((a, b) => ({ ...a, ...b }))
   };
 };
 
 export default {
-  create
+  create,
+  callNames: apiCallNames
 };

@@ -4,15 +4,17 @@ import { ThemeProvider } from "styled-components";
 import { Switch, Route } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 
-import Login from "./Login/Login";
+import Login from "./auth/LoginRoute";
 
 import theme from "../constans/theme/theme";
 
 import { RoutePrivate, RoutePublic } from "../components";
-import Dashboard from "./Dashboard/Dashboard";
-import NotFound from "./NotFound/NotFound";
+import Dashboard from "./dashboard/DashboardRoute";
+import NotFound from "./common/NotFound";
 import { AppWrapper } from "../components";
 
+// try to use as much function components as possible but when using
+// decorators stick to class components
 @inject("routing", "store")
 @withRouter
 @observer
@@ -21,11 +23,13 @@ export default class App extends Component {
     const {
       store: { auth }
     } = this.props;
-
+    console.log(auth.error);
     return (
       <ThemeProvider theme={theme}>
         <AppWrapper>
-          {/* {auth.isLoggedIn && <Header user={auth.userData} logout={auth.logout} />} */}
+          {/* {auth.isLoggedIn && (
+            <Header user={auth.userData} logout={auth.logout} />
+          )} */}
           <Switch>
             <RoutePublic
               isAuthenticated={auth.isLoggedIn}
@@ -48,17 +52,6 @@ export default class App extends Component {
               to="/login"
               component={Dashboard}
             />
-            {/*<RoutePrivate
-                isAuthenticated={!!user.ID}
-                path="/dashboard"
-                exact
-                component={Dashboard}
-              />
-              <RoutePrivate
-                isAuthenticated={!!user.ID}
-                path="/dashboard/:dndClassId"
-                component={DndClassItem}
-              />*/}
             <Route component={NotFound} />
           </Switch>
         </AppWrapper>

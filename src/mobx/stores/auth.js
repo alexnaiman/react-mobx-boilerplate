@@ -1,6 +1,10 @@
 import { types, flow } from "mobx-state-tree";
-
+import getCookie from "@/config/cookieProvider";
 import { User } from "../models";
+import baseStore from "./base";
+import { getEnv } from "mobx-state-tree";
+
+const cookie = getCookie();
 
 // Here we will add call our api service for requests *just like sagas/thunks*
 const authStore = types
@@ -16,38 +20,47 @@ const authStore = types
     }
   }))
   .actions(self => ({
+    afterCreate: () => {
+      self.token = cookie.get("access_token");
+    },
     setLoading: value => {
       self.isLoading = value;
     },
-    setError: (code, message) => {
-      self.error = message.split(".")[0];
-      self.setLoading(false);
-    },
-    setUser: user => {
-      self.userData = User.create({
-        email: user.email,
-        name: user.displayName,
-        image: user.photoURL
-      });
-      self.setLoading(false);
-    },
-    // helper function used to simulate login delay
-    setToken: token => (self.token = token),
-    // function that simulates a backend request with delay
-    login: flow(function* login() {
-      self.setLoading(true);
-      yield new Promise(resolve => setTimeout(resolve, 1000)).then(() =>
-        self.setToken("LOGGED_IN")
+    setField: (field, value) => (self[field] = value),
+    login: flow(function* login(email, password) {
+      const authCalls = getEnv(self).callNames.authCallNames;
+      yield self.fetch(
+        authCalls.LOGIN,
+        { email, password },
+        self.onLoginSuccess,
+        self.onError
       );
-      self.setLoading(false);
     }),
-    logout: flow(function* logout() {
-      self.setLoading(true);
-      yield new Promise(resolve => setTimeout(resolve, 1000)).then(() =>
-        self.setToken("")
+    register: flow(function* login(email, password) {
+      const authCalls = getEnv(self).callNames.authCallNames;
+      yield self.fetch(
+        authCalls.REGISTER,
+        { email, password },
+        self.onLoginSuccess,
+        self.onError
       );
+    }),
+    onLoginSuccess: response => {
+      self.setField("token", response.access_token);
+    },
+
+    onError: error => {
+      self.setField("error", error.originalError);
+    },
+    logout: () => {
+      self.setLoading(true);
+      self.setField("token", "");
       self.setLoading(false);
-    })
+    }
   }));
 
-export default authStore;
+const enhancedAuth = types.compose(
+  authStore,
+  baseStore
+);
+export default enhancedAuth;

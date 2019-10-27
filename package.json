@@ -9,6 +9,7 @@
     "bootstrap": "^4.2.1",
     "classnames": "^2.2.6",
     "core-js": "^2.6.1",
+    "eslint-import-resolver-babel-module": "^5.1.0",
     "gh-pages": "^2.0.1",
     "mobx": "^5.9.4",
     "mobx-react": "^5.4.3",
@@ -29,13 +30,17 @@
     "react-router-dom": "^4.3.1",
     "react-test-renderer": "^16.7.0",
     "reactstrap": "^6.5.0",
-    "styled-components": "^4.0.0"
+    "styled-components": "^4.0.0",
+    "universal-cookie": "^4.0.2"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-export-default-from": "^7.5.2",
     "babel-plugin-import": "^1.11.0",
+    "babel-plugin-module-resolver": "^3.2.0",
     "customize-cra": "^0.2.9",
+    "eslint": "^6.1.0",
     "eslint-config-prettier": "^4.2.0",
-    "eslint-config-react-app": "^4.0.0",
+    "eslint-config-react-app": "^5.0.2",
     "eslint-plugin-flowtype": "2.x",
     "eslint-plugin-import": "2.x",
     "eslint-plugin-jsx-a11y": "6.x",
@@ -89,5 +94,6 @@
       "prettier --write",
       "git add"
     ]
-  }
+  },
+  "@modules": "./src/modules"
 }
